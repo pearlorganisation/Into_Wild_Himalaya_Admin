@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Stack,Skeleton } from '@mui/material';
 import { deleteTrek, getAllTreks } from '../../features/action/trek';
-
+import ViewModalTrek from './ViewModalTrek';
 
 const ViewTreks = () => {
   const { trekData, isDeleted, isLoading } = useSelector((state) => state.trek);
@@ -21,6 +21,7 @@ const ViewTreks = () => {
  }
    }, [isDeleted]);
 
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [id, setId] = useState();
   const handleDelete = () => {
@@ -33,6 +34,15 @@ const ViewTreks = () => {
     setShowDeleteModal(true);
     setId(ID);
   };
+
+  const [showViewModal,setShowViewModal] = useState(false)
+  const [viewData,setViewData]= useState()
+
+  const handleViewModal=(itemData)=>{
+    setShowViewModal(true)
+    setViewData(itemData)
+  }
+
   const handleAddTrek = () => {
     navigate('/createTrek');
   };
@@ -76,8 +86,8 @@ const ViewTreks = () => {
               <tr>
                 <th className="py-3 px-6">ID</th>
                 <th className="py-3 px-6">Trek Name</th>
-                <th className="py-3 px-6">Season</th>
-                <th className="py-3 px-6">Difficulty</th>
+                <th className="py-3 px-6">Trek Thumbnail</th>
+                <th className="py-3 px-10">Duration</th>
                 <th className="py-3 px-6">Price</th>
                 <th className="py-3 px-6">Actions</th>
                 
@@ -104,10 +114,13 @@ const ViewTreks = () => {
                       {item?.name }
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {item?.season}
+                    <img src={item?.trekLogo} className='w-36 h-24 rounded-lg'/>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {item?.difficulty}
+                    {item?.season?.map((item,idx)=>
+            <span className='me-2 bg-slate-100 mb-2 rounded-md px-2'>{item}</span>
+        )}
+        
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {item?.price}
@@ -116,10 +129,19 @@ const ViewTreks = () => {
 
                     <td className="px-3 whitespace-nowrap">
                       <button
+                         onClick={() => {
+                          handleViewModal(item)
+                         }}
+                        className="py-2 px-3  font-semibold text-indigo-500 hover:text-indigo-600 duration-150 hover:bg-gray-50 rounded-lg
+                        "
+                      >
+                        View
+                      </button>
+                      <button
                         onClick={() => {
                           navigate(`/updateTrek/${item?._id}`, { state: item });
                         }}
-                        className="py-2 px-3 font-semibold text-green-500 hover:text-green-600 duration-150 hover:bg-gray-50 rounded-lg
+                        className="py-2 px-3  font-semibold text-green-500 hover:text-green-600 duration-150 hover:bg-gray-50 rounded-lg
                         "
                       >
                         Edit
@@ -142,6 +164,9 @@ const ViewTreks = () => {
       </div>
       {showDeleteModal && (
         <Delete setModal={setShowDeleteModal} handleDelete={handleDelete} />
+      )}
+       {showViewModal && (
+        <ViewModalTrek setModal={setShowViewModal} viewData={viewData} />
       )}
     </>
   );

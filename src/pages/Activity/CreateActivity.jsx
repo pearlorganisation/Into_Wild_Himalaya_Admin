@@ -7,6 +7,7 @@ import { createActivity } from "../../features/action/activity";
 import Select from "react-select"
 import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined';
 import ReactTextEditor from "../../components/TextEditor/JoditEditor";
+import defaultPhoto from "/placeholder.jpg"
 // import {zodResolver} from "@hookform/resolvers/zod"
 // import { z } from "zod";
 
@@ -28,8 +29,7 @@ const CreateActivity = () => {
 
     const [photo, setPhoto] = useState("");
     
-    const defaultPhoto =
-    "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
+  
     
     const handlePhotoChange = (e) => {
       const selectedPhoto = e.target.files[0];
@@ -255,7 +255,7 @@ const removeBannerImage = (index) => {
             </div>
 
           <div style={{ marginTop: '4rem' }}>
-              <button className="w-full px-4 py-2 text-white bg-pink-700  font-medium hover:bg-pink-800 active:bg-pink-700 rounded-lg duration-150">
+              <button className="w-full btn-grad:hover btn-grad">
               {isLoading ? (
                 <ClipLoader color="#c4c2c2" />
               ) : (<>Create</>)}

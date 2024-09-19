@@ -3,29 +3,31 @@ import Delete from '../../components/Delete';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Stack,Skeleton } from '@mui/material';
-import { deleteActivity, getAllActivities } from '../../features/action/activity';
-import ViewModalAcitvity from './ViewModalActivity';
+import { deleteContactUs, getAllContactUs } from '../../features/action/contactUs';
 
 
-const ViewActivities = () => {
-  const { activityData, isDeleted, isLoading } = useSelector((state) => state.activity);
+
+
+
+const ViewContactUs = () => {
+  const { contactUsData, isDeleted, isLoading } = useSelector((state) => state.contactUs);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllActivities());
+    dispatch(getAllContactUs());
    }, []);
 
    useEffect(() => {
  if(isDeleted){
-   dispatch(getAllActivities());
+   dispatch(getAllContactUs());
  }
    }, [isDeleted]);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [id, setId] = useState();
   const handleDelete = () => {
-    dispatch(deleteActivity(id));
+    dispatch(deleteContactUs(id));
     setShowDeleteModal(false);
     setId('');
   };
@@ -35,18 +37,7 @@ const ViewActivities = () => {
     setId(ID);
   };
 
-  const [showViewModal,setShowViewModal] = useState(false)
-  const [viewData,setViewData]= useState()
-
-  const handleViewModal=(itemData)=>{
-    setShowViewModal(true)
-    setViewData(itemData)
-  }
-
-  const handleAddActivity = () => {
-    navigate('/createActivity');
-  };
-
+ 
 
   return (
     <>
@@ -56,31 +47,27 @@ const ViewActivities = () => {
         <div className="items-start justify-between md:flex">
           <div className="max-w-lg">
             <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
-              Manage Activities
+              Manage ContactUs
             </h3>
             <p className="text-gray-600 mt-2">
-            This page is for handle activitys by Create, Update and Delete
+            This page is for handle contactUs for View and Delete
             </p>
           </div>
-          <div className="mt-3 md:mt-0">
-            <button
-              onClick={handleAddActivity}
-              className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-700 active:bg-indigo-700 md:text-sm"
-            >
-              Add Activity
-            </button>
-          </div>
+    
         </div>
-      
+     
         <div className="mt-5 shadow-sm border rounded-lg overflow-x-auto">
           <table className="w-full table-auto text-sm text-left ">
             <thead className="bg-gray-50 text-gray-600 font-medium border-b justify-between">
               <tr>
                 <th className="py-3 px-6">ID</th>
-                <th className="py-3 px-6">Activity Title</th>
-                <th className="py-3 px-6">Activity Thumbnail</th>
-            
-                <th className="py-3 px-6">Actions</th>
+                <th className="py-3 px-6">Name</th>
+                <th className="py-3 px-6">Email</th>
+          
+         
+                <th className="py-3 px-6">Mobile No.</th>
+                <th className="py-3 px-6">Address</th>
+                {/* <th className="py-3 px-6">Message</th> */}
                 
               </tr>
             </thead>
@@ -98,39 +85,31 @@ const ViewActivities = () => {
             </td>
           </tr>
           ) : (
-            Array.isArray(activityData) && activityData.length > 0 && activityData?.map((item, idx) => (
+            Array.isArray(contactUsData) && contactUsData.length > 0 && contactUsData?.map((item, idx) => (
                   <tr key={idx}>
                     <td className="px-6 py-4 whitespace-nowrap">{idx+1}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {item?.title }
+                    {item?.name }
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <img src={item?.logo} className='w-36 h-24 rounded-lg'/>
+                    {item?.email }
                     </td>
-               
-                  
+                   
+              
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {item?.phoneNumber}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {item?.address}
+                    </td>
+                    {/* <td className="px-6 py-4 whitespace-nowrap">
+                      {item?.message}
+                    </td> */}
 
 
                     <td className="px-3 whitespace-nowrap">
-                    <button
-                         onClick={() => {
-                          handleViewModal(item)
-                         }}
-                        className="py-2 px-3  font-semibold text-indigo-500 hover:text-indigo-600 duration-150 hover:bg-gray-50 rounded-lg
-                        "
-                      >
-                        View
-                      </button>
-                      
-                      <button
-                        onClick={() => {
-                          navigate(`/updateActivity/${item?._id}`, { state: item });
-                        }}
-                        className="py-2 px-3 font-semibold text-green-500 hover:text-green-600 duration-150 hover:bg-gray-50 rounded-lg
-                        "
-                      >
-                        Edit
-                      </button>
+                 
+                    
                       <button
                         onClick={() => {
                           handleModal(item?._id);
@@ -150,11 +129,10 @@ const ViewActivities = () => {
       {showDeleteModal && (
         <Delete setModal={setShowDeleteModal} handleDelete={handleDelete} />
       )}
-        {showViewModal && (
-        <ViewModalAcitvity setModal={setShowViewModal} viewData={viewData} />
-      )}
+    
+
     </>
   );
 };
 
-export default ViewActivities;
+export default ViewContactUs;

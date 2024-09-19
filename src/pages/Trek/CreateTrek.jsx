@@ -164,20 +164,20 @@ const removeBannerImage = (index) => {
    
 
         const onSubmit = data =>{
-    
+
             const {difficulty,season} = data;
             const difficultyValue = difficulty.value
-            const seasonValue = season.value
-
+            const seasonArray= season?.map((item,idx)=>item?.value)
+            console.log(seasonArray)
             const formData = new FormData();
             formData.append("name",data?.name)
-            formData.append("season",seasonValue)
+            formData.append("season",JSON.stringify(seasonArray))
             formData.append("price",data?.price)
             formData.append("ageLimit",data?.ageLimit)
             formData.append("duration",data?.duration)
             formData.append("altitude",data?.altitude)
-            formData.append("trekTitle",data?.trekTitle)
             formData.append("description",data?.description)
+            formData.append("bannerDescription",data?.bannerDescription)
             formData.append("difficulty",difficultyValue)
             Array.from(data?.trekLogo).forEach((img)=>{
               formData.append("trekLogo",img)
@@ -230,25 +230,26 @@ const removeBannerImage = (index) => {
                                       name="season"
                                       render={({ field }) => (
                                           <Select
+                                          isMulti
                                               value={field.value}
-                                              options={[{ value: "Winter", label: "Winter" },{value:"Pre-winter",label:"Pre-winter"},
+                                              options={[{ value: "Winter", label: "Winter" },
                                               {value:"Autumn",label:"Autumn"},{value:"Monsoon",label:"Monsoon"},{value:"Spring",label:"Spring"},{value:"Summer",label:"Summer"},]}
                                               onChange={(selectedOption) => field.onChange(selectedOption)}
                                               className="mt-2 "
                                               placeholder="Choose Season "
                                              
-                                              styles={{
-                                                  control: (provided) => ({
-                                                      ...provided,
-                                                      border: '1px solid #CBD5E1', // Set custom border style
-                                                      borderRadius: '0.400rem', // Set custom border radius
-                                                      height: '40px', // Add height here
-                                                  }),
-                                                  placeholder: (provided) => ({
-                                                      ...provided,
-                                                      color: '#9CA3AF', // Set custom placeholder color
-                                                  }),
-                                              }}
+                                              // styles={{
+                                              //     control: (provided) => ({
+                                              //         ...provided,
+                                              //         border: '1px solid #CBD5E1', // Set custom border style
+                                              //         borderRadius: '0.400rem', // Set custom border radius
+                                              //         height: '40px', // Add height here
+                                              //     }),
+                                              //     placeholder: (provided) => ({
+                                              //         ...provided,
+                                              //         color: '#9CA3AF', // Set custom placeholder color
+                                              //     }),
+                                              // }}
  
                                           />
                                      )}
@@ -388,6 +389,20 @@ const removeBannerImage = (index) => {
           </div>
 </div>
 
+<div className="w-full">
+            <label className="font-medium">Banner Text</label>
+            <input 
+            {...register('bannerDescription', { required: true })}
+              type="text"
+              className="w-full mt-2  px-5 py-2 text-gray-500 border-slate-300 bg-transparent outline-none border focus:border-teal-400 shadow-sm rounded-lg"
+            />
+             {errors.bannerDescription && (
+                    <span className="text-red-500">
+                      Banner Description is required
+                    </span>
+                  )}
+          </div>
+
 <div className="sm:flex space-y-6 sm:space-y-0 justify-between gap-10">
 <div className="w-full">
           
@@ -474,19 +489,7 @@ const removeBannerImage = (index) => {
   Content
 </div>
 
-<div className="w-full">
-            <label className="font-medium">Trek Title</label>
-            <input 
-            {...register('trekTitle', { required: true})}
-              type="text"
-              className="w-full mt-2  px-5 py-2 text-gray-500 border-slate-300 bg-transparent outline-none border focus:border-teal-400 shadow-sm rounded-lg"
-            />
-             {errors.trekTitle && (
-                    <span className="text-red-500">
-                      Title is required
-                    </span>
-                  )}
-          </div>
+
 
 <div className="full">
               <label className="font-medium ">Trek Description</label>
@@ -511,7 +514,7 @@ const removeBannerImage = (index) => {
             </div>
 
           <div style={{ marginTop: '4rem' }}>
-              <button className="w-full px-4 py-2 text-white bg-pink-700  font-medium hover:bg-pink-800 active:bg-pink-700 rounded-lg duration-150">
+              <button className="w-full btn-grad:hover btn-grad">
               {isLoading ? (
                 <ClipLoader color="#c4c2c2" />
               ) : (<>Create</>)}

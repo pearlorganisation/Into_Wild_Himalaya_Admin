@@ -6,6 +6,9 @@ import { encryptTransform } from "redux-persist-transform-encrypt";
 
 import trek from "./slices/trek";
 import activity from "./slices/activity";
+import tour from "./slices/tour";
+import auth from "./slices/auth";
+import contactUs from "./slices/contactUs";
 
 
 
@@ -14,6 +17,9 @@ import activity from "./slices/activity";
 const rootReducer = combineReducers({
   trek,
   activity,
+  tour,
+  auth,
+  contactUs
 });
 
 
