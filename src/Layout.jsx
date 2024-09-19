@@ -3,8 +3,9 @@ import logo from "./assets/WildLogo.png"
 import { Link, Outlet } from "react-router-dom";
 import TerrainIcon from '@mui/icons-material/Terrain';
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
-
+import CategoryIcon from '@mui/icons-material/Category';
 import HikingIcon from '@mui/icons-material/Hiking';
+import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 export default function Layout() {
 
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
@@ -18,6 +19,11 @@ export default function Layout() {
       icon: <SpaceDashboardIcon/>,
     },
     {
+      label: "Bookings",
+      path: "/booking",
+      icon: <StickyNote2Icon/>,
+    },
+    {
       label: "Treks",
       path: "/trek",
       icon: <TerrainIcon/>,
@@ -27,6 +33,12 @@ export default function Layout() {
       label: "Activities",
       path: "/activity",
       icon: <HikingIcon/>,
+    },
+    
+    {
+      label: "Products",
+      path: "/product",
+      icon: <CategoryIcon/>,
     },
     
   ];

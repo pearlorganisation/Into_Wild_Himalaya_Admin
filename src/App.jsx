@@ -10,6 +10,9 @@ import { Toaster } from 'react-hot-toast';
 import CreateTrek from './pages/Trek/CreateTrek.jsx';
 import ViewActivities from './pages/Activity/ViewActivity.jsx';
 import CreateActivity from './pages/Activity/CreateActivity.jsx';
+import ViewProduct from './pages/Product/ViewProduct.jsx';
+import CreateProduct from './pages/Product/CreateProduct.jsx';
+import ViewBooking from './pages/Booking/ViewBooking.jsx';
 
 function App() {
 
@@ -43,6 +46,19 @@ function App() {
           {
             path: "/createActivity",
             element: <CreateActivity />   
+          },
+          
+          {
+            path: "/product",
+            element: <ViewProduct />   
+          },
+          {
+            path: "/createProduct",
+            element: <CreateProduct />   
+          },
+          {
+            path: "/booking",
+            element: <ViewBooking />   
           },
           
        ],

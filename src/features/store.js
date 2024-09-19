@@ -6,6 +6,8 @@ import { encryptTransform } from "redux-persist-transform-encrypt";
 
 import trek from "./slices/trek";
 import activity from "./slices/activity";
+import product from "./slices/product";
+import booking from "./slices/booking";
 
 
 
@@ -14,6 +16,8 @@ import activity from "./slices/activity";
 const rootReducer = combineReducers({
   trek,
   activity,
+  product,
+  booking
 });
 
 
