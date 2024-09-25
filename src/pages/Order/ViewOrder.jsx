@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Stack,Skeleton } from '@mui/material';
-import { getAllBookings } from '../../features/action/booking';
-import ViewBookingModal from './ViewBookingModal';
+import { getAllOrders } from '../../features/action/order';
+import ViewModalOrder from './ViewModalOrder';
 
 
 
-const ViewBooking = () => {
-    const { bookingData, isDeleted, isLoading } = useSelector((state) => state.booking);
+
+const ViewOrder = () => {
+    const { orderData, isDeleted, isLoading } = useSelector((state) => state.order);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const ViewBooking = () => {
   }
 
   useEffect(() => {
-    dispatch(getAllBookings());
+    dispatch(getAllOrders());
    }, []);
 
 
@@ -35,7 +36,7 @@ const ViewBooking = () => {
         <div className="items-start justify-between md:flex">
           <div className="max-w-lg">
             <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
-              Manage Bookings
+              Manage Orders
             </h3>
             {/* <p className="text-gray-600 mt-2">
             This page is for handle products by Create, Update and Delete
@@ -64,9 +65,10 @@ const ViewBooking = () => {
             <thead className="bg-gray-50 text-gray-600 font-medium border-b justify-between">
               <tr>
                 <th className="py-3 px-6">ID</th>
-                <th className="py-3 px-6">Tour Name</th>
+                <th className="py-3 px-6">Product</th>
                 <th className="py-3 px-6">Amount</th>
-                <th className="py-3 px-6">Member Names</th>
+                <th className="py-3 px-6">Email</th>
+                <th className="py-3 px-6">Payment Method</th>
                 <th className="py-3 px-6">Actions</th>
                 
               </tr>
@@ -85,28 +87,32 @@ const ViewBooking = () => {
             </td>
           </tr>
           ) : (
-            Array.isArray(bookingData) && bookingData.length > 0 && bookingData?.map((item, idx) => (
+            Array.isArray(orderData) && orderData.length > 0 && orderData?.map((item, idx) => (
                   <tr key={idx}>
                     <td className="px-6 py-4 whitespace-nowrap">{item?._id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {item?.tourId?.title }
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                    ₹ {item?.amount }
-                    </td>
            
                     <td className="px-6 py-4 whitespace-nowrap">
-                    {Array.isArray(item?.memberNames) && item?.memberNames?.map((priceItem,idy)=>(
+                    {Array.isArray(item?.product) && item?.product?.map((product,idy)=>(
                          <div className=' bg-slate-100 flex mb-2 rounded-md px-2 gap-2 w-fit' key={idy}>
                          <div className='flex items-center '><span className='bg-white  rounded-md px-2'>{idy+1} :</span> </div>
                          <div className='p-2 space-x-2'>
-                      <span className='bg-white mb-2 rounded-md px-2 '> {priceItem?.firstName} {priceItem?.lastName}</span>
+                      <span className='bg-white mb-2 rounded-md px-2 '> {product?.productId?.productName}</span>
+                      <span className='bg-white mb-2 rounded-md px-2 '> Size : {product?.size}</span>
                   
                    
                       </div>
                       </div>
                      )) }
 
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                    ₹ {item?.amount }
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {item?.email }
+                    </td>
+                    <td className={`${item?.paymentType==="Cash on delivery" ? "text-yellow-500":"text-green-700"} font-semibold text-center py-4 whitespace-nowrap`}>
+                      {item?.paymentType }
                     </td>
            
 
@@ -130,10 +136,10 @@ const ViewBooking = () => {
         </div>
       </div>
       {showViewModal && (
-        <ViewBookingModal setModal={setShowViewModal} viewData={viewData} />
+        <ViewModalOrder setModal={setShowViewModal} viewData={viewData} />
       )}
     </>
   );
 };
 
-export default ViewBooking;
+export default ViewOrder;

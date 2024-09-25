@@ -6,7 +6,17 @@ import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import CategoryIcon from '@mui/icons-material/Category';
 import HikingIcon from '@mui/icons-material/Hiking';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import ContactsIcon from '@mui/icons-material/Contacts';
+import { logout } from "./features/action/auth";
+import { useDispatch } from "react-redux";
+
 export default function Layout() {
+
+  const dispatch = useDispatch()
+  const handleBackToLogin = ()=>{
+    dispatch(logout());
+  }
 
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
 
@@ -24,21 +34,28 @@ export default function Layout() {
       icon: <StickyNote2Icon/>,
     },
     {
-      label: "Treks",
-      path: "/trek",
-      icon: <TerrainIcon/>,
+      label: "Product Orders",
+      path: "/order",
+      icon: <ShoppingBasketIcon/>,
     },
-    
     {
       label: "Activities",
       path: "/activity",
       icon: <HikingIcon/>,
     },
-    
     {
       label: "Products",
       path: "/product",
-      icon: <CategoryIcon/>,
+      icon: <CategoryIcon/>},
+      {
+      label: "Tours",
+      path: "/tour",
+      icon: <TerrainIcon/>,
+    },
+    {
+      label: "Contact Us",
+      path: "/contactUs",
+      icon: <ContactsIcon/>,
     },
     
   ];
@@ -83,7 +100,7 @@ export default function Layout() {
           <aside
             id="nav-menu-4"
             aria-label="Side navigation"
-            className={`fixed top-0 bottom-0 left-0 lg:static  z-40 flex w-72 flex-col border-r border-r-slate-200 bg-white transition-transform lg:translate-x-0 ${
+            className={`fixed top-0 bottom-0 left-0 lg:static z-10 flex w-72 flex-col border-r border-r-slate-200 bg-white transition-transform lg:translate-x-0 ${
               isSideNavOpen ? "translate-x-0" : " -translate-x-full"
             }`}
           >
@@ -144,7 +161,7 @@ export default function Layout() {
                           />
                         </svg>
                       </div>
-                      <button type="button"  className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm font-medium">
+                      <button type="button" onClick={handleBackToLogin}  className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm font-medium">
                         Logout
                       </button>
                     </a>

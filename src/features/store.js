@@ -8,6 +8,10 @@ import trek from "./slices/trek";
 import activity from "./slices/activity";
 import product from "./slices/product";
 import booking from "./slices/booking";
+import tour from "./slices/tour";
+import auth from "./slices/auth";
+import contactUs from "./slices/contactUs";
+import order from "./slices/order";
 
 
 
@@ -17,7 +21,11 @@ const rootReducer = combineReducers({
   trek,
   activity,
   product,
-  booking
+  booking,
+  tour,
+  auth,
+  contactUs,
+  order
 });
 
 
