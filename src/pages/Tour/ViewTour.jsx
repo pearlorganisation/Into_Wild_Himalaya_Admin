@@ -92,8 +92,6 @@ const ViewTours = () => {
                 <th className="py-3 px-6">ID</th>
                 <th className="py-3 px-6">Tour Name</th>
                 <th className="py-3 px-6">Tour Banner</th>
-          
-         
                 <th className="py-3 px-6">Price</th>
                 <th className="py-3 px-6">Activity</th>
                 <th className="py-3 px-6">Actions</th>

@@ -560,7 +560,7 @@ onClick={() => appendAvailableDates("")}
   className="w-full mt-2 px-5 py-2 text-gray-500 border-slate-300 bg-transparent outline-none border focus:border-teal-400 shadow-sm rounded-lg"
 />
 <input
-{...register(`availableDates.${index}.vacant`, { required: 'Group Size is required' })}
+{...register(`availableDates.${index}.totalSeats`, { required: 'Group Size is required' })}
   type="number"
   placeholder="Group Size"
   className="w-full mt-2 px-5 py-2 text-gray-500 border-slate-300 bg-transparent outline-none border focus:border-teal-400 shadow-sm rounded-lg"

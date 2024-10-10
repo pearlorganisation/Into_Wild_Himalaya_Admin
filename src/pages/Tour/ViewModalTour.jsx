@@ -107,10 +107,18 @@ export default function ViewModalTour ({viewData,setModal}) {
         </td>
       </tr>
       <tr>
-        <td className="py-2 px-4 border border-gray-300">Max Group Size</td>
+        <td className="py-2 px-4 border border-gray-300">Seats</td>
         <td className="py-2 px-4 border border-gray-300">
-        
-        {viewData ? viewData?.maxGroupSize: ''}
+          {Array.isArray(viewData?.availableDates) && viewData?.availableDates?.map((date,idy)=>(
+                         <div className=' bg-slate-100 flex mb-2 rounded-md px-2 gap-2 w-fit' key={idy}>
+                         <div className='flex items-center '><span className='bg-white  rounded-md px-2'>{idy+1} :</span> </div>
+                         <div className='p-2 space-x-2'>
+                      <span className='bg-white mb-2 rounded-md px-2 font-medium text-green-700'> Total Booked : {date?.totalBooked}</span>
+                      <span className='bg-white mb-2 rounded-md px-2 font-medium text-red-700'> Vacant Seats : {date?.vacantSeats}</span>
+                      <span className='bg-white mb-2 rounded-md px-2 font-medium text-blue-700'> Total Seats : {date?.totalSeats}</span>
+                      </div>
+                      </div>
+                     )) }
           
         </td>
       </tr>
