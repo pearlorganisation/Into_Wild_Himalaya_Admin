@@ -69,7 +69,7 @@ export default function ViewModalTour ({viewData,setModal}) {
       </tr>
       <tr>
         <td className="py-2 px-4 border border-gray-300">Tour Banner</td>
-        <td className="py-2 px-4 border border-gray-300">{viewData ? <img src={viewData?.banners[0]}  className="rounded-lg h-32 w-52" /> : ''}</td>
+        <td className="py-2 px-4 border border-gray-300">{viewData ? <img src={viewData?.banners[0]?.url}  className="rounded-lg h-32 w-52" /> : ''}</td>
       </tr>
    
 
@@ -135,10 +135,6 @@ export default function ViewModalTour ({viewData,setModal}) {
        <span className='bg-slate-100 mb-2 rounded-md px-2'>{item}</span>) : ''} </td>
       </tr>
       <tr>
-        <td className="py-2 px-4 border border-gray-300">Itinerary Logo</td>
-        <td className="py-2 px-4 border border-gray-300">{viewData ? <img src={viewData?.itineraryLogo}  className="rounded-lg h-24 w-36" /> : ''}</td>
-      </tr>
-      <tr>
         <td className="py-2 px-4 border border-gray-300">Itinerary</td>
         <td className="py-2 px-4 border border-gray-300">
         
@@ -148,16 +144,23 @@ export default function ViewModalTour ({viewData,setModal}) {
       </tr>
       <tr>
         <td className="py-2 px-4 border border-gray-300">Map Image</td>
-        <td className="py-2 px-4 border border-gray-300">{viewData ? <img src={viewData?.mapLogo}  className="rounded-lg h-32 w-52" /> : ''}</td>
+        <td className="py-2 px-4 border border-gray-300">{viewData ? <img src={viewData?.mapLogo?.url}  className="rounded-lg h-32 w-52" /> : ''}</td>
       </tr>
       <tr>
-        <td className="py-2 px-4 border  border-gray-300">Inclusions & Exclusions</td>
-        <td className="py-2 px-4 border border-gray-300">
-        
-        {viewData ? parse(viewData?.inclusionsAndExclusions || "No Data Found") : ''}
-          
-        </td>
+        <td className="py-2 px-4 border  border-gray-300">Inclusions</td>
+       
+        <td className="py-2 px-4 border border-gray-300 flex flex-col">
+       {viewData ? viewData?.inclusions?.map((item)=>
+       <span className='bg-slate-100 mb-2 rounded-md px-2'>{item}</span>) : ''} </td>
       </tr>
+      <tr>
+        <td className="py-2 px-4 border  border-gray-300">Exclusions</td>
+       
+        <td className="py-2 px-4 border border-gray-300 flex flex-col">
+       {viewData ? viewData?.exclusions?.map((item)=>
+       <span className='bg-slate-100 mb-2 rounded-md px-2'>{item}</span>) : ''} </td>
+      </tr>
+
 
           <tr>
         <td className="py-2 px-4 border border-gray-300">Banner Text</td>
@@ -170,7 +173,7 @@ export default function ViewModalTour ({viewData,setModal}) {
       {viewData && viewData.gallery ? (
         viewData.gallery.map((item, idx) => (
           <div key={idx} className="sm:w-[26%] "> {/* Set width to 1/3 for 3 images per row */}
-            <img src={item} alt={`Gallery Image ${idx}`} className="rounded-lg h-32 w-56 mb-2" />
+            <img src={item?.url} alt={`Gallery Image ${idx}`} className="rounded-lg h-32 w-56 mb-2" />
           </div>
         ))
       ) : (
@@ -186,7 +189,7 @@ export default function ViewModalTour ({viewData,setModal}) {
       {viewData && viewData.banners ? (
         viewData.banners.map((item, idx) => (
           <div key={idx} className="sm:w-[26%] "> {/* Set width to 1/3 for 3 images per row */}
-            <img src={item} alt={`Gallery Image ${idx}`} className="rounded-lg h-32 w-56 mb-2" />
+            <img src={item?.url} alt={`Gallery Image ${idx}`} className="rounded-lg h-32 w-56 mb-2" />
           </div>
         ))
       ) : (

@@ -17,13 +17,17 @@ const CreateTour = () => {
   const navigate=useNavigate()
   const dispatch = useDispatch();
   const {tourData,isLoading} = useSelector((state)=>state.tour)
+  const {regionData} = useSelector((state)=>state.region)
   const {activityData} = useSelector((state)=>state.activity)
 
-
+console.log(regionData)
     const {register,handleSubmit,formState: { errors },control}=useForm({
       defaultValues:{
         availableDates:[" "],
-        tripHighlights: [" "]
+        tripHighlights:[" "],
+        inclusions:[" "],
+        exclusions:[" "]
+
       }
    
     })
@@ -37,25 +41,18 @@ const { fields: availableDatesFields, append: appendAvailableDates, remove: remo
   control,
   name: "availableDates"
 });
+const { fields: inclusionFields, append: appendInclusion, remove: removeInclusion } = useFieldArray({
+  control,
+  name: "inclusions"
+});
+const { fields: exclusionFields, append: appendExclusion, remove: removeExclusion } = useFieldArray({
+  control,
+  name: "exclusions"
+});
 
 
     const [mapPhoto, setMapPhoto] = useState("");
-    const [itineraryPhoto, setItineraryPhoto] = useState("");
-    
-    
 
-    const handleItineraryPhoto = (e) => {
-      const selectedPhoto = e.target.files[0];
-      
-      if (selectedPhoto) {
-        
-        const reader = new FileReader();
-        reader.readAsDataURL(selectedPhoto);
-        reader.onloadend = () => {
-          setItineraryPhoto(reader.result);
-        };
-      }
-    };
     const handleMapPhoto = (e) => {
       const selectedPhoto = e.target.files[0];
       
@@ -186,26 +183,46 @@ const { fields: availableDatesFields, append: appendAvailableDates, remove: remo
     });
   };
 
+  const months= [
+    { value: "January", label: "January" },
+    { value: "February", label: "February" },
+    { value: "March", label: "March" },
+    { value: "April", label: "April" },
+    { value: "May", label: "May" },
+    { value: "June", label: "June" },
+    { value: "July", label: "July" },
+    { value: "August", label: "August" },
+    { value: "September", label: "September" },
+    { value: "October", label: "October" },
+    { value: "November", label: "November" },
+    { value: "December", label: "December" }
+  ]
+
         const onSubmit = data =>{
-    const {activity,season,difficulty}= data;
-    console.log(difficulty)
+    const {activity,season,difficulty,region,months}= data;
     const categoryValue= activity?.value
     const difficultyValue= difficulty?.value
+    const regionValue= region?.value
     const seasonArray= season?.map((item,idx)=>item?.value)
+    const monthArray= months?.map((item,idx)=>item?.value)
 
             const formData = new FormData();
             formData.append("title",data?.title)
             formData.append("price",data?.price)
             formData.append("activity",categoryValue);   
             formData.append("tripDuration",data?.tripDuration);
+            formData.append("region",regionValue);
+            formData.append("months",JSON.stringify(monthArray));
             formData.append("tripHighlights",JSON.stringify(data?.tripHighlights));
             formData.append("availableDates",JSON.stringify(data?.availableDates));
+            formData.append("exclusions",JSON.stringify(data?.exclusions));
+            formData.append("inclusions",JSON.stringify(data?.inclusions));
             formData.append("season",JSON.stringify(seasonArray))
             formData.append("difficulty",difficultyValue);
             formData.append("highestPoint",data?.highestPoint);
             formData.append("description",data?.description)
             formData.append("bannerDescription",data?.bannerDescription)
-            formData.append("inclusionsAndExclusions",data?.inclusionsAndExclusions)
+    
             formData.append("itinerary",data?.itinerary)
        
             Array.from(data?.gallery).forEach((img)=>{
@@ -214,12 +231,10 @@ const { fields: availableDatesFields, append: appendAvailableDates, remove: remo
             Array.from(data?.banners).forEach((img)=>{
               formData.append("banners",img)
             })
-            Array.from(data?.itineraryLogo).forEach((img)=>{
-              formData.append("itineraryLogo",img)
-            })
-            Array.from(data?.mapLogo).forEach((img)=>{
+  if(data?.mapLogo)  
+      {   Array.from(data?.mapLogo).forEach((img)=>{
               formData.append("mapLogo",img)
-            })
+            })}
           
             
             dispatch(createTour(formData))
@@ -333,6 +348,7 @@ const { fields: availableDatesFields, append: appendAvailableDates, remove: remo
                                               onChange={(selectedOption) => field.onChange(selectedOption)}
                                               className="mt-2 "
                                               placeholder="Choose Season "
+                                              closeMenuOnSelect={false}
                                              
                                           />
                                      )}
@@ -351,6 +367,61 @@ const { fields: availableDatesFields, append: appendAvailableDates, remove: remo
         <div className="sm:flex space-y-6 sm:space-y-0 justify-between gap-10">
        
 
+
+          <div className="w-full">
+            <label className="font-medium">Region</label>
+            <Controller 
+                                      control={control}
+                                      name="region"
+                                      render={({ field }) => (
+                                          <Select
+                                              value={field.value}
+                                              options={Array.isArray(regionData)&& regionData.length> 0 && regionData.map(item=> ({ value: item?._id, label: item?.name }))}
+                                              onChange={(selectedOption) => field.onChange(selectedOption)}
+                                              className="mt-2 "
+                                              placeholder="Choose Region"
+                                             
+                                          />
+                                     )}
+                                      rules={{ required: true }}
+                                      
+                                  />
+             {errors.region && (
+                    <span className="text-red-500">
+                      Region is required
+                    </span>
+                  )}
+          </div>
+          <div className="w-full">
+            <label className="font-medium">Months</label>
+            <Controller 
+                                      control={control}
+                                      name="months"
+                                      render={({ field }) => (
+                                          <Select
+                                          isMulti
+                                              value={field.value}
+                                              options={months}
+                                              onChange={(selectedOption) => field.onChange(selectedOption)}
+                                              className="mt-2 "
+                                              placeholder="Choose Months "
+                                              closeMenuOnSelect={false}
+                                             
+                                          />
+                                     )}
+                                      rules={{ required: true }}
+                                      
+                                  />
+             {errors.months && (
+                    <span className="text-red-500">
+                      Month is required
+                    </span>
+                  )}
+          </div>
+      
+      
+</div>
+<div className="sm:flex space-y-6 sm:space-y-0 justify-between gap-10">
 <div className="w-full">
             <label className="font-medium">Banner Text</label>
             <input 
@@ -364,7 +435,6 @@ const { fields: availableDatesFields, append: appendAvailableDates, remove: remo
                     </span>
                   )}
           </div>
-      
 </div>
 
    <div className="sm:flex space-y-6 sm:space-y-0 justify-between gap-10">
@@ -635,21 +705,14 @@ onClick={() => appendTripHighlights("")}
 
 
 
-<div className="full space-y-3">
+<div className="w-full space-y-3">
               <label className="text-2xl text-black">Overview</label>
-              
-              <Controller
-                name={`description`}
-                control={control}
-                render={({ field: { onChange} }) => (
-                  <ReactTextEditor
-                  
-                    onChange={(data) => onChange(data)}
-                  
-                  />
-                )}
-                rules={{ required: true }}
-              />
+            
+                   <textarea 
+            {...register('description', { required: true })}
+              type="text"
+              className="w-full mt-2  px-5 py-2 text-gray-500 border-slate-300 bg-transparent outline-none border focus:border-teal-400 shadow-sm rounded-lg"
+            />
 
               {errors?.description && (
                 <span className=" text-red-500">
@@ -659,27 +722,7 @@ onClick={() => appendTripHighlights("")}
             </div>
           
           <div className="text-2xl text-black">Itinerary</div>
-          <div className="w-full">
-          
-          <div className="font-medium space-y-6"> Itinerary Logo
-           
-          <img class="mt-2 w-20 h:20 sm:w-44 sm:h-36 rounded" src={itineraryPhoto || defaultPhoto} alt="No Image"/>
-          <label htmlFor="file_input2" className="flex
-          " ><InsertPhotoOutlinedIcon/>
-          <div className="w-1/2 px-2 border rounded-md border-slate-300 ">Click here to upload</div></label>
-         
-          <input
-           {...register('itineraryLogo', { required: true, onChange:(e)=>{handleItineraryPhoto(e)} })}
-         
-           className="hidden w-54 sm:w-[455px] border-slate-300 text-sm text-gray-500 border rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input2" type="file"/>
-            {errors.itineraryLogo && (
-                  <span className="text-red-500 font-normal">
-                     Itinerary Logo is required
-                  </span>
-                )}
-          </div>
-         
-          </div>
+     
 <div className="full space-y-3">
               <label className="font-medium ">Itinerary</label>
               
@@ -713,39 +756,106 @@ onClick={() => appendTripHighlights("")}
           <div className="w-1/2 px-2 border rounded-md border-slate-300 ">Click here to upload</div></label>
          
           <input
-           {...register('mapLogo', { required: true,onChange:(e)=>{handleMapPhoto(e)} })}
+           {...register('mapLogo', { onChange:(e)=>{handleMapPhoto(e)} })}
          
            className="hidden w-54 sm:w-[455px] border-slate-300 text-sm text-gray-500 border rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input1" type="file"/>
-            {errors.mapLogo && (
-                  <span className="text-red-500 font-normal">
-                     Map Logo is required
-                  </span>
-                )}
+         
           </div>
          
           </div>
-<div className="full space-y-3">
-              <label className="text-2xl text-black">Inclusions & Exclusions</label>
-              
-              <Controller
-                name={`inclusionsAndExclusions`}
-                control={control}
-                render={({ field: { onChange } }) => (
-                  <ReactTextEditor
-                  
-                    onChange={(data) => onChange(data)}
-                  
-                  />
-                )}
-                rules={{ required: true }}
-              />
 
-              {errors?.inclusionsAndExclusions && (
-                <span className=" text-red-500">
-                  Inclusions & Exclusions is required
-                </span>
-              )}
-            </div>
+
+
+<div className="w-full space-y-3">
+<div className="sm:flex sm:space-y-0 justify-between ">
+
+          
+<label className="text-2xl text-black">Inclusions</label>
+<button
+type="button"
+className=" border rounded-md  bg-pink-700 text-white font-semibold text-xl px-2 hover:bg-pink-600"
+onClick={() => appendInclusion("")}
+>
++
+</button>
+</div>
+<ul>
+{inclusionFields.map((item, index) => (
+<li key={item.id}>
+
+<div className="sm:flex gap-10 ">
+<div className="w-full">
+
+<input
+{...register(`inclusions.${index}`, { required: 'Inclusions are required' })}
+  type="text"
+  placeholder={ `Inclusion ${index + 1}` }
+  className="w-full mt-2 px-5 py-2 text-gray-500 border-slate-300 bg-transparent outline-none border focus:border-teal-400 shadow-sm rounded-lg"
+/>
+
+</div>
+
+
+</div>
+{ index>0 && (
+<button className=" border rounded-md bg-rose-500 text-white text-xs px-2 hover:bg-slate-950" type="button" onClick={() => removeInclusion(index)}>Delete</button>)
+}
+</li>
+
+))}
+</ul>
+
+{errors.inclusions && (
+  <span className="text-red-500">
+    {errors.inclusions.message}
+  </span>
+)}
+
+<div className="sm:flex sm:space-y-0 justify-between ">
+
+          
+<label className="text-2xl text-black">Exclusions</label>
+<button
+type="button"
+className=" border rounded-md  bg-pink-700 text-white font-semibold text-xl px-2 hover:bg-pink-600"
+onClick={() => appendExclusion("")}
+>
++
+</button>
+</div>
+<ul>
+{exclusionFields.map((item, index) => (
+<li key={item.id}>
+
+<div className="sm:flex gap-10 ">
+<div className="w-full">
+
+<input
+{...register(`exclusions.${index}`, { required: 'Exclusions are required' })}
+  type="text"
+  placeholder={ `Exclusion ${index + 1}` }
+  className="w-full mt-2 px-5 py-2 text-gray-500 border-slate-300 bg-transparent outline-none border focus:border-teal-400 shadow-sm rounded-lg"
+/>
+
+</div>
+
+
+</div>
+{ index>0 && (
+<button className=" border rounded-md bg-rose-500 text-white text-xs px-2 hover:bg-slate-950" type="button" onClick={() => removeExclusion(index)}>Delete</button>)
+}
+</li>
+
+))}
+</ul>
+
+{errors.exclusions && (
+  <span className="text-red-500">
+    {errors.exclusions.message}
+  </span>
+)}
+
+</div>
 
           <div style={{ marginTop: '4rem' }}>
               <button className="w-full btn-grad:hover btn-grad">

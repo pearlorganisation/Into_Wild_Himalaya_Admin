@@ -52,6 +52,11 @@ export default function Layout() {
       path: "/tour",
       icon: <TerrainIcon/>,
     },
+      {
+      label: "Regions",
+      path: "/region",
+      icon: <TerrainIcon/>,
+    },
     {
       label: "Contact Us",
       path: "/contactUs",

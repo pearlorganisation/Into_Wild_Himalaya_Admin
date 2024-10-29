@@ -12,6 +12,7 @@ import tour from "./slices/tour";
 import auth from "./slices/auth";
 import contactUs from "./slices/contactUs";
 import order from "./slices/order";
+import region from "./slices/region";
 
 
 
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
   tour,
   auth,
   contactUs,
-  order
+  order,
+  region
 });
 
 

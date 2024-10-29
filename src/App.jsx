@@ -17,6 +17,8 @@ import Login from "./pages/Auth/Login.jsx"
 import { useSelector } from 'react-redux';
 import ViewContactUs from './pages/ContactUs/ViewContactUs.jsx';
 import ViewOrder from './pages/Order/ViewOrder.jsx';
+import ViewRegion from './pages/Region/ViewRegion.jsx';
+import CreateRegion from './pages/Region/CreateRegion.jsx';
 
 function App() {
   const { isUserLoggedIn } = useSelector((state) => state.auth);
@@ -75,6 +77,14 @@ function App() {
           {
             path: "/order",
             element: <ViewOrder />   
+          },
+          {
+            path: "/region",
+            element: <ViewRegion />   
+          },
+          {
+            path: "/createRegion",
+            element: <CreateRegion />   
           },
           
        ],
