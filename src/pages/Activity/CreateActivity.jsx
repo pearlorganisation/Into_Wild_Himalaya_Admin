@@ -1,12 +1,10 @@
 import React, { useState,useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { useForm,Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import { createActivity } from "../../features/action/activity";
-import Select from "react-select"
 import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined';
-import ReactTextEditor from "../../components/TextEditor/JoditEditor";
 import defaultPhoto from "/placeholder.jpg"
 // import {zodResolver} from "@hookform/resolvers/zod"
 // import { z } from "zod";
@@ -19,30 +17,9 @@ const CreateActivity = () => {
   const dispatch = useDispatch();
   const {activityData,isLoading} = useSelector((state)=>state.activity)
 
-  // const schema = z.object({
-  //   price: z.number("Price is a number ")
-  // })
-
     const {register,handleSubmit,formState: { errors },control}=useForm({
-      // resolver: zodResolver(schema)
     })
 
-    const [photo, setPhoto] = useState("");
-    
-  
-    
-    const handlePhotoChange = (e) => {
-      const selectedPhoto = e.target.files[0];
-      
-      if (selectedPhoto) {
-        
-        const reader = new FileReader();
-        reader.readAsDataURL(selectedPhoto);
-        reader.onloadend = () => {
-          setPhoto(reader.result);
-        };
-      }
-    };
 
 
 
@@ -113,10 +90,7 @@ const removeBannerImage = (index) => {
             formData.append("title",data?.title)
           
             formData.append("description",data?.description)
-       
-            Array.from(data?.logo).forEach((img)=>{
-              formData.append("logo",img)
-            })
+      
           
             Array.from(data?.banners).forEach((img)=>{
               formData.append("banners",img)
@@ -160,27 +134,7 @@ const removeBannerImage = (index) => {
       
        
         </div>
-        <div className="w-full">
-          
-          <div className="font-medium space-y-6"> Activity Thumbnail
-           
-          <img class="mt-2 w-20 h:20 sm:w-44 sm:h-36 rounded" src={photo || defaultPhoto} alt="No Image"/>
-          <label htmlFor="file_input" className="flex
-          " ><InsertPhotoOutlinedIcon/>
-          <div className="w-1/2 px-2 border rounded-md border-slate-300 ">Click here to upload</div></label>
-         
-          <input
-           {...register('logo', { required: true,onChange:(e)=>{handlePhotoChange(e)} })}
-         
-           className="hidden w-54 sm:w-[455px] border-slate-300 text-sm text-gray-500 border rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file"/>
-            {errors.logo && (
-                  <span className="text-red-500 font-normal">
-                     Activity Thumbnail is required
-                  </span>
-                )}
-          </div>
-         
-          </div>
+
 
 
 
@@ -234,18 +188,13 @@ const removeBannerImage = (index) => {
 <div className="full space-y-3">
               <label className="font-medium">Activity Description</label>
               
-              <Controller
-                name={`description`}
-                control={control}
-                render={({ field: { onChange, value, ref } }) => (
-                  <ReactTextEditor
-                  
-                    onChange={(data) => onChange(data)}
-                  
-                  />
-                )}
-                rules={{ required: true }}
-              />
+     
+            
+                   <textarea 
+            {...register('description', { required: true })}
+              type="text"
+              className="w-full mt-2  px-5 py-2 text-gray-500 border-slate-300 bg-transparent outline-none border focus:border-teal-400 shadow-sm rounded-lg"
+            />
 
               {errors?.description && (
                 <span className=" text-red-500">

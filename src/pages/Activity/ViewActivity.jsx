@@ -105,7 +105,7 @@ const ViewActivities = () => {
                       {item?.title }
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <img src={item?.logo} className='w-36 h-24 rounded-lg'/>
+                      <img src={item?.banners[0]?.url} className='w-36 h-24 rounded-lg'/>
                     </td>
                
                   

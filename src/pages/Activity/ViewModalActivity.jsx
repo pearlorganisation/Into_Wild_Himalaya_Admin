@@ -63,11 +63,6 @@ export default function ViewModalAcitvity ({viewData,setModal}) {
         <td className="py-2 px-4 border border-gray-300">Activity Name</td>
         <td className="py-2 px-4 border border-gray-300">{viewData ? viewData?.title: ''}</td>
       </tr>
-     
-      <tr>
-        <td className="py-2 px-4 border border-gray-300">Activity Thumbnail</td>
-        <td className="py-2 px-4 border border-gray-300">{viewData ? <img src={viewData?.logo}  className="rounded-lg h-32 w-52" /> : ''}</td>
-      </tr>
    
 
      
@@ -85,7 +80,7 @@ export default function ViewModalAcitvity ({viewData,setModal}) {
       {viewData && viewData.banners ? (
         viewData.banners.map((item, idx) => (
           <div key={idx} className="sm:w-[26%] "> {/* Set width to 1/3 for 3 images per row */}
-            <img src={item} alt={`Gallery Image ${idx}`} className="rounded-lg h-32 w-56 mb-2" />
+            <img src={item?.url} alt={`Gallery Image ${idx}`} className="rounded-lg h-32 w-56 mb-2" />
           </div>
         ))
       ) : (

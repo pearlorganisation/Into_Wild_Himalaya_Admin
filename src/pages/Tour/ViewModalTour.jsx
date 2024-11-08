@@ -64,6 +64,10 @@ export default function ViewModalTour ({viewData,setModal}) {
         <td className="py-2 px-4 border border-gray-300">{viewData ? viewData?.title: ''}</td>
       </tr>
       <tr>
+        <td className="py-2 px-4 border border-gray-300">Region</td>
+        <td className="py-2 px-4 border border-gray-300">{viewData ? viewData?.region?.name: ''}</td>
+      </tr>
+      <tr>
         <td className="py-2 px-4 border border-gray-300">Price</td>
         <td className="py-2 px-4 border border-gray-300">{viewData ? viewData?.price : ''}</td>
       </tr>
